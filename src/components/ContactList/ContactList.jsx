@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export const Contacts = props => {
+export const ContactList = props => {
   return (
     <ul>
       {props.contacts.map(obj => (
@@ -12,7 +12,7 @@ export const Contacts = props => {
   );
 };
 
-Contacts.propTypes = {
+ContactList.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   number: PropTypes.string,

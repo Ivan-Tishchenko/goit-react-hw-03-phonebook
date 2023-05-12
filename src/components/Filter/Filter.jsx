@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export const Fuinder = props => {
+export const Filter = props => {
   return (
     <>
       <label htmlFor="finder">Find contacts by name</label>
@@ -17,6 +17,6 @@ export const Fuinder = props => {
   );
 };
 
-Fuinder.propTypes = {
+Filter.propTypes = {
   handleInput: PropTypes.func,
 };

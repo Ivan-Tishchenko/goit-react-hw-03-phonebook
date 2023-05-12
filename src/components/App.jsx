@@ -1,36 +1,32 @@
 import React, { Component } from 'react';
 import { Section } from './Section/Section';
-import { Form } from './Form/Form';
+import { ContactForm } from './ContactForm/ContactForm';
 import { nanoid } from 'nanoid';
-import { Contacts } from './Contacts/Contacts';
-import { Fuinder } from './Fuinder/Fuinder';
+import { ContactList } from './ContactList/ContactList';
+import { Filter } from './Filter/Filter';
 
 export class App extends Component {
   state = {
     contacts: [],
-    name: '',
-    number: '',
     filter: '',
   };
 
-  handleSubmit = evt => {
+  handleSubmit = (evt, name, number) => {
     evt.preventDefault();
-    if (this.state.contacts.map(obj => obj.name).includes(this.state.name)) {
-      alert(`${this.state.name} is alredy in contacts`);
+    if (this.state.contacts.map(obj => obj.name).includes(name)) {
+      alert(`${name} is alredy in ContactList`);
     } else {
       this.setState({
         contacts: [
           ...this.state.contacts,
           ...[
             {
-              name: this.state.name,
+              name,
               id: nanoid(),
-              number: this.state.number,
+              number,
             },
           ],
         ],
-        name: '',
-        number: '',
       });
     }
     evt.currentTarget.reset();
@@ -54,15 +50,12 @@ export class App extends Component {
   render() {
     return (
       <>
-        <Section title={'Phonebook'}>
-          <Form
-            handleSubmit={this.handleSubmit}
-            handleInput={this.handleInput}
-          />
+        <Section title="Phonebook">
+          <ContactForm handleSubmit={this.handleSubmit} />
         </Section>
-        <Section title={'Contacts'}>
-          <Fuinder handleInput={this.handleInput} />
-          <Contacts contacts={this.filter()} />
+        <Section title="ContactList">
+          <Filter handleInput={this.handleInput} />
+          <ContactList contacts={this.filter()} />
         </Section>
       </>
     );

@@ -1,17 +1,29 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
-import css from './Form.module.css';
+import css from './ContactForm.module.css';
 
-export class Form extends Component {
+export class ContactForm extends Component {
+  state = {};
   nameImputId = nanoid();
   telInputId = nanoid();
+
+  hendleInput = evt => {
+    const { name, value } = evt.target;
+    this.setState({ [name]: value });
+  };
+
   render() {
     return (
-      <form className={css.form} onSubmit={this.props.handleSubmit}>
+      <form
+        className={css.form}
+        onSubmit={evt =>
+          this.props.handleSubmit(evt, this.state.name, this.state.number)
+        }
+      >
         <label htmlFor={this.nameImputId}>Name</label>
         <input
-          onInput={this.props.handleInput}
+          onInput={this.hendleInput}
           type="text"
           name="name"
           id={this.nameImputId}
@@ -22,7 +34,7 @@ export class Form extends Component {
 
         <label htmlFor={this.telInputId}>Number</label>
         <input
-          onInput={this.props.handleInput}
+          onInput={this.hendleInput}
           id={this.telInputId}
           type="tel"
           name="number"
@@ -31,13 +43,14 @@ export class Form extends Component {
           required
         />
 
-        <button className={css.button} type="submit">Add contact</button>
+        <button className={css.button} type="submit">
+          Add contact
+        </button>
       </form>
     );
   }
 }
 
-Form.propTypes = {
-  hendleInput: PropTypes.func,
+ContactForm.propTypes = {
   handleSubmit: PropTypes.func,
 };
