@@ -7,7 +7,7 @@ import { Filter } from './Filter/Filter';
 
 export class App extends Component {
   state = {
-    contacts: [],
+    contacts: this.getFromLocalstorage(),
     filter: '',
   };
 
@@ -30,6 +30,34 @@ export class App extends Component {
       });
     }
     evt.currentTarget.reset();
+    this.addToLocalstorage([
+      ...this.state.contacts,
+      ...[
+        {
+          name,
+          id: nanoid(),
+          number,
+        },
+      ],
+    ]);
+  };
+
+  addToLocalstorage(array) {
+    const data = JSON.stringify(array);
+    localStorage.setItem(`contacts`, data);
+  }
+
+  getFromLocalstorage() {
+    const dataJSON = localStorage.getItem(`contacts`);
+    const localData = JSON.parse(dataJSON);
+    return localData ? localData : [];
+  }
+
+  remuveFromLocalstorage = id => {
+    const data = this.getFromLocalstorage();
+    const arrayToReturnInLocalstorage = data.filter(obj => obj.id !== id);
+    this.addToLocalstorage(arrayToReturnInLocalstorage);
+    this.setState({ contacts: arrayToReturnInLocalstorage });
   };
 
   handleInput = ({ currentTarget: { name, value } }) => {
@@ -55,7 +83,11 @@ export class App extends Component {
         </Section>
         <Section title="ContactList">
           <Filter handleInput={this.handleInput} />
-          <ContactList contacts={this.filter()} />
+          <ContactList
+            contacts={this.filter()}
+            getFromLocalstorage={this.getFromLocalstorage}
+            remuveFromLocalstorage={this.remuveFromLocalstorage}
+          />
         </Section>
       </>
     );
